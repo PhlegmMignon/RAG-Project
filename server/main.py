@@ -6,6 +6,7 @@ from google import genai
 import time
 import json
 from schemas import UserInput
+from fastapi.middleware.cors import CORSMiddleware
 
 
 
@@ -15,6 +16,19 @@ client = genai.Client(api_key=GEMINI_KEY)
 
 
 app = FastAPI()
+origins = [
+    "http://10.0.2.15:3000",  # Frontend development URL
+    "http://localhost:3000",   # Local development URL
+    # "https://yourfrontenddomain.com",  # Production URL (if applicable)
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow only these origins
+    allow_credentials=True,  # Allow cookies to be sent with requests
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 def extract_key_terms(input: str):
   prompt = f"Extract up to 5 of the most important nouns, entities, and concepts from the text: {input}. Try to only return terms in the text. The returned terms should be in an array. Your response should not be anything but an array or I'll die. Do not return anything else"
