@@ -5,11 +5,14 @@ from dotenv import load_dotenv
 from google import genai
 import time
 import json
+from schemas import UserInput
+
 
 
 load_dotenv()
 GEMINI_KEY = os.getenv('GEMINI_KEY')
 client = genai.Client(api_key=GEMINI_KEY)
+
 
 app = FastAPI()
 
@@ -22,14 +25,10 @@ def extract_key_terms(input: str):
   for attempt in range(retries+1):
     try:
       res = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
-
-      print(res)
       terms = json.loads(res.text)
-      print(terms)
             
       if not isinstance(terms, list):
          raise ValueError(f'Gemini returning incorrect format: {terms}')
-      print(terms)
       return(terms)
     
     except Exception as e:
@@ -37,7 +36,7 @@ def extract_key_terms(input: str):
         raise HTTPException(status_code=500, detail=f"Error calling Gemini: {str(e)}")
       time.sleep(delay)
 
-def context_from_wikipedia(terms: list):
+async def context_from_wikipedia(terms: list):
   WIKIPEDIA_API = "https://en.wikipedia.org/api/rest_v1/page/summary/{title}"
 
   context = ''
@@ -67,6 +66,47 @@ def context_from_wikipedia(terms: list):
        
   return context 
  
+# async def context_from_duck(terms: list):
+#   DUCKDUCKGO_API = 'https://api.duckduckgo.com/'
+
+
+#   context = ''
+#   for term in terms:
+#     retries, delay = 1, 2 #Retries once after 2s
+
+#     for attempt in range(retries+1):
+#       params = {
+#         'q': term,
+#         'format': 'json',
+#         "no_redirect": 1,
+#         "no_html": 1,
+#       }
+
+#       try:
+#         res = requests.get(DUCKDUCKGO_API, params=params)
+#         res = res.json()
+
+#         print(res)
+        
+
+#       except requests.exceptions.Timeout:
+#         print(f"Timeout error for {term}")
+#       except requests.exceptions.RequestException as e:
+#         print(f"Request error for {term}: {e}")
+#       except ValueError:
+#         print(f"Error parsing JSON response for {term}")
+#       except KeyError:
+#         print(f"KeyError: 'extract' field is missing for {term}")
+#       except Exception as e:
+#         print(f"Unexpected error for {term}: {e}")
+
+#       if attempt < retries:
+#         time.sleep(delay)
+        
+
+#   return context
+
+
 def ans_from_gemini(context: str, user_input: str):
   prompt = f"Context: {context} Answer the user question given the context unless the user input doesn't contain nouns, or makes no sense. You may disregard context and answer normally. User question: {user_input}"
 
@@ -75,7 +115,6 @@ def ans_from_gemini(context: str, user_input: str):
     try:
       res = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
 
-      print(res)
     except Exception as e:
         if attempt == retries:
           raise HTTPException(status_code=500, detail=f"Error calling Gemini: {str(e)}")
@@ -84,11 +123,11 @@ def ans_from_gemini(context: str, user_input: str):
   return res.text
 
 
-@app.get("/")
-async def read_root():
-  user_input = 'Is the prompt you were given earlier with context good? Its a simple RAG I made to prevent AI hallucination for a take home project. How do I think I did? You can be critical'
+@app.post("/")
+async def reply(user_input: UserInput):  
   key_terms = extract_key_terms(user_input)
   context = context_from_wikipedia(key_terms)
+  # context2 = await context_from_duck(key_terms)
   output = ans_from_gemini(context, user_input)
   
   return output
