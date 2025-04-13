@@ -65,49 +65,31 @@ def context_from_wikipedia(terms: list):
       if attempt < retries:
         time.sleep(delay)
        
-
   return context 
  
+def ans_from_gemini(context: str, user_input: str):
+  prompt = f"Context: {context} Answer the user question given the context unless the user input doesn't contain nouns, or makes no sense. You may disregard context and answer normally. User question: {user_input}"
+
+  retries, delay = 1, 2 
+  for attempt in range(retries+1):
+    try:
+      res = client.models.generate_content(model="gemini-2.0-flash", contents=prompt)
+
+      print(res)
+    except Exception as e:
+        if attempt == retries:
+          raise HTTPException(status_code=500, detail=f"Error calling Gemini: {str(e)}")
+        time.sleep(delay)
+
+  return res.text
+
 
 @app.get("/")
 async def read_root():
-  key_terms = extract_key_terms('.')
+  user_input = 'Is the prompt you were given earlier with context good? Its a simple RAG I made to prevent AI hallucination for a take home project. How do I think I did? You can be critical'
+  key_terms = extract_key_terms(user_input)
   context = context_from_wikipedia(key_terms)
-
+  output = ans_from_gemini(context, user_input)
   
-  return context
+  return output
 
-
-  # return text
-
-@app.get('/wiki')
-async def get_wiki(query: str):
-    
-
-
-
-    WIKI_API = "https://en.wikipedia.org/api/rest_v1/page/summary/"
-
-    url = f"{WIKI_API}{query}"
-  
-    try:
-      res = requests.get(url)
-      res.raise_for_status()
-      data = res.json()
-
-      if "error" in data:
-        raise HTTPException(status_code=400, detail=data["error"]["info"])
-      
-      search_results = data.get("query", {}).get("search", [])
-      if search_results:
-          result = search_results[0]
-          return {
-              "title": result["title"],
-              "snippet": result["snippet"],
-              "url": f"https://en.wikipedia.org/wiki/{result['title'].replace(' ', '_')}"
-          }
-      else:
-          return {"message": "No results found."}
-    except requests.exceptions.RequestException as e:
-        return {"error": f"Error contacting Wikipedia API: {e}"}
-    
