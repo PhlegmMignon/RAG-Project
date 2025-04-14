@@ -25,6 +25,8 @@ const InputBox: React.FC = () => {
       const res = await fetch("https://rag-project-xkv4.onrender.com", {
         // const res = await fetch("http://127.0.0.1:8000 ", {
         method: "POST",
+        mode: "cors",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "https://rag-project-1.onrender.com",
