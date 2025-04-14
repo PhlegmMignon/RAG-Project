@@ -1,13 +1,24 @@
 "use client";
 import React, { useState } from "react";
-import { useChatContext } from "@/context/ChatContext";
+import { useChatContext, TMessage } from "@/context/ChatContext";
 
 const InputBox: React.FC = () => {
   const [input, setInput] = useState("");
-  const { setLoading, setResponse } = useChatContext();
+  const { setLoading, setResponse, setMessages } = useChatContext();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    //Prevents empty inputs
+    if (!input.trim()) return;
+
+    //Stores user message in conversation
+    const userMessage: TMessage = {
+      role: "user",
+      text: input,
+    };
+    setMessages((prev) => [...prev, userMessage]);
+
     setLoading(true);
 
     console.log("Submit sent" + { input });
@@ -24,6 +35,14 @@ const InputBox: React.FC = () => {
 
       const data = await res.json();
       setResponse(data);
+
+      //Stores bot message in conversation
+      const botMessage: TMessage = {
+        role: "bot",
+        text: data,
+      };
+      setMessages((prev) => [...prev, botMessage]);
+
       console.log("Response:", data);
     } catch (err) {
       console.error("Error:", err);
