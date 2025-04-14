@@ -2,6 +2,8 @@
 
 Live link: https://rag-project-1.onrender.com/
 
+May take a little while to load since I'm using free hosting.
+
 ## How to run locally
 
 1. Clone repository
