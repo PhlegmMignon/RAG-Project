@@ -16,15 +16,15 @@ client = genai.Client(api_key=GEMINI_KEY)
 
 
 app = FastAPI()
-origins = [
-    "http://10.0.2.15:3000",  # Frontend development URL
-    "http://localhost:3000",   # Local development URL
-    "https://rag-project-1.onrender.com/"  # Production URL (if applicable)
-]
+# origins = [
+#     "http://10.0.2.15:3000",  # Frontend development URL
+#     "http://localhost:3000",   # Local development URL
+#     "https://rag-project-1.onrender.com/"  # Production URL (if applicable)
+# ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Allow only these origins
+    allow_origins=["*"],  # Allow only these origins
     allow_credentials=True,  # Allow cookies to be sent with requests
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
