@@ -27,6 +27,7 @@ const InputBox: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Origin: "https://rag-project-1.onrender.com",
         },
         body: JSON.stringify({ user_input: input }),
       });
