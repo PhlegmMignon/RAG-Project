@@ -12,10 +12,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="flex justify-center h-full">
-      <body className={`${inter.className} flex justify-center`}>
+    <html lang="en" className="flex justify-center h-full w-full">
+      <body
+        className={`${inter.className} flex justify-center w-full overflow-hidden`}
+      >
         <ChatProvider>
-          <div className="flex justify-center max-w-5xl p-4">{children}</div>
+          <div className="flex justify-center w-5xl p-4 overflow-hidden">
+            {children}
+          </div>
         </ChatProvider>
       </body>
     </html>

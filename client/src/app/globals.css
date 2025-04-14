@@ -1,26 +1,51 @@
 @import "tailwindcss";
 
-:root {
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
-}
+} */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
   }
-}
+} */
+
+/* :root {
+  --p-primary-color: var(--p-primary-400);
+  --p-primary-contrast-color: var(--p-surface-900);
+  --p-primary-hover-color: var(--p-primary-300);
+  --p-primary-active-color: var(--p-primary-200);
+  --p-content-border-color: var(--p-surface-700);
+  --p-content-hover-background: var(--p-surface-800);
+  --p-content-hover-color: var(--p-surface-0);
+  --p-highlight-background: color-mix(
+    in srgb,
+    var(--p-primary-400),
+    transparent 84%
+  );
+  --p-highlight-color: rgba(255, 255, 255, 0.87);
+  --p-highlight-focus-background: color-mix(
+    in srgb,
+    var(--p-primary-400),
+    transparent 76%
+  );
+  --p-highlight-focus-color: rgba(255, 255, 255, 0.87);
+  --p-text-color: var(--p-surface-0);
+  --p-text-hover-color: var(--p-surface-0);
+  --p-text-muted-color: var(--p-surface-400);
+  --p-text-hover-muted-color: var(--p-surface-300);
+} */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* background: var(--background); */
+  /* color: var(--foreground); */
+  font-family: "Inter", sans-serif;
+  background-color: #1a202c;
+  color: #f7fafc;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
