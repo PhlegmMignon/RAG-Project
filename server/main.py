@@ -122,7 +122,7 @@ async def context_from_wikipedia(terms: list):
 
 
 def ans_from_gemini(context: str, user_input: str):
-  prompt = f"Context: {context} Answer the user question by expanding off the given context unless the user input doesn't contain nouns, or makes no sense. If the user input doesn't make sense or contains no nouns, or the context is empty. Ignore everything reply with your normal behavior. User question: {user_input}"
+  prompt = f"Answer the user question by expanding off the given context unless the user input doesn't contain nouns, or makes no sense. Sometimes you'll not be given context. If the user input doesn't make sense or contains no nouns, or the context is empty. Ignore everything reply with your normal behavior. Provide a citation if you can. Context: {context}  User question: {user_input}"
 
   retries, delay = 1, 2 
   for attempt in range(retries+1):
