@@ -79,47 +79,6 @@ async def context_from_wikipedia(terms: list):
         time.sleep(delay)
        
   return context 
- 
-# async def context_from_duck(terms: list):
-#   DUCKDUCKGO_API = 'https://api.duckduckgo.com/'
-
-
-#   context = ''
-#   for term in terms:
-#     retries, delay = 1, 2 #Retries once after 2s
-
-#     for attempt in range(retries+1):
-#       params = {
-#         'q': term,
-#         'format': 'json',
-#         "no_redirect": 1,
-#         "no_html": 1,
-#       }
-
-#       try:
-#         res = requests.get(DUCKDUCKGO_API, params=params)
-#         res = res.json()
-
-#         print(res)
-        
-
-#       except requests.exceptions.Timeout:
-#         print(f"Timeout error for {term}")
-#       except requests.exceptions.RequestException as e:
-#         print(f"Request error for {term}: {e}")
-#       except ValueError:
-#         print(f"Error parsing JSON response for {term}")
-#       except KeyError:
-#         print(f"KeyError: 'extract' field is missing for {term}")
-#       except Exception as e:
-#         print(f"Unexpected error for {term}: {e}")
-
-#       if attempt < retries:
-#         time.sleep(delay)
-        
-
-#   return context
-
 
 def ans_from_gemini(context: str, user_input: str):
   prompt = f"Answer the user question by expanding off the given context unless the user input doesn't contain nouns, or makes no sense. Sometimes you'll not be given context. If the user input doesn't make sense or contains no nouns, or the context is empty. Ignore everything reply with your normal behavior. Provide a citation if you can. Context: {context}  User question: {user_input}"
