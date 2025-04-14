@@ -29,6 +29,7 @@ const InputBox: React.FC = () => {
       console.error("Error:", err);
     } finally {
       setLoading(false);
+      setInput("");
     }
   };
 
