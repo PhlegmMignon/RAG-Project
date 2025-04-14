@@ -16,15 +16,11 @@ client = genai.Client(api_key=GEMINI_KEY)
 
 
 app = FastAPI()
-# origins = [
-#     "http://10.0.2.15:3000",  # Frontend development URL
-#     "http://localhost:3000",   # Local development URL
-#     "https://rag-project-1.onrender.com/"  # Production URL (if applicable)
-# ]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow only these origins
+    allow_origins=["*"],  
     allow_credentials=True,  # Allow cookies to be sent with requests
     allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
@@ -100,7 +96,6 @@ def ans_from_gemini(context: str, user_input: str):
 async def reply(user_input: UserInput):  
   key_terms = extract_key_terms(user_input)
   context = context_from_wikipedia(key_terms)
-  # context2 = await context_from_duck(key_terms)
   output = ans_from_gemini(context, user_input)
   
   return output
