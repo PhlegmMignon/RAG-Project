@@ -9,8 +9,6 @@ export type TMessage = {
 type TChatContext = {
   loading: boolean;
   setLoading: (value: boolean) => void;
-  // response: string;
-  // setResponse: (value: string) => void;
   messages: TMessage[];
   setMessages: (
     messages: TMessage[] | ((prev: TMessage[]) => TMessage[])
@@ -21,7 +19,6 @@ const ChatContext = createContext<TChatContext | undefined>(undefined);
 
 export const ChatProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
-  // const [response, setResponse] = useState("");
   const [messages, setMessages] = useState<TMessage[]>([]);
 
   return (
@@ -29,8 +26,6 @@ export const ChatProvider = ({ children }: { children: ReactNode }) => {
       value={{
         loading,
         setLoading,
-        // response,
-        // setResponse,
         messages,
         setMessages,
       }}

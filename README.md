@@ -1,34 +1,45 @@
-# RAG-Project
+# RAG-Project-Darren-Mah
 
-Send results to gemini + query. 'Get the information from the 2 results that best answers the question'
+Live link: https://rag-project-1.onrender.com/
 
-Test cases:
-What is x
-X may be ambiguous, like apple
-Solve math
+## How to run locally
 
-Extras:
-Images
-Citation
-Suggest related query
-Multi turn query
+1. Clone repository
+2. Navigate to `/server`. Optionally, make a virtual envirnoment.
+3. `pip install requirements.txt`
+4. `uvicorn main:app --reload` to host backend
+5. Navigate to `/client` and run `npm i`
+6. `npm run dev` to host frontend
 
-Included SerpAPI as failsafe in case of nonexistant/fake wiki article
-Tell AI to detect which is false if doesn't align
-Tell AI to detect if it needs to prompt user for more clarify if sources conflict
+You'll need to create a .env and get a Gemini Api key to declare GEMINI_KEY for the backend to work
 
-User -> my code -> send query to Gemini
-Fall back to default behavior prompt
+## Dependencies
 
-Test:
-What's 2+2
-Difference between sun and moon
-MLK
-What caused World War II and how did it end
-Tell me about Qwertyuiopland
-Hi, hello there
+Relies on Gemini to parse key terms from user input.
+Relies on wikipedia to gather context from key terms.
+Relies on Gemini to process context and user input to generate a reply.
 
-Reflections: SerpAPI, adding test files + think of more test cases.
-Sometimes gemini call fails to trigger if called in quick succession. Need to wait between calls.
+## Overview
 
-https://rag-project-xkv4.onrender.com
+I've set out with the goal of creating a general all purpose answer machine that should handle a variety of responses well. However, there are significant problems such as the Gemini api failing when called too often and inconsistent answers given the same user input.
+
+## Challenges
+
+- I had trouble finding a unique direction to take this project. With the time constraints, I just went with the basic implementation.
+- Fine tuning the prompt to cover a wider range of responses is tricky and hasn't been perfected yet
+- Gathering knowledge on how the Wikipedia and Gemini APIs work
+
+## Some features I would've liked to add
+
+Backend
+
+- Include 2nd knowledge source when context gathering fails for the first one. Comparing context as well
+- Solutions to Gemini being called too often
+- Fine tuning prompts to handle more low context inputs
+- Add test files
+
+Frontend
+
+- Better text formatting for AI reply
+- Scrollbar adjustments
+- Optional featuers listed in assignment description
